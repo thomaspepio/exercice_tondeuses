@@ -1,7 +1,9 @@
 package fr.tpepio.poc.tondeuse.strategy.impl;
 
-import fr.tpepio.poc.tondeuse.bean.Case;
-import fr.tpepio.poc.tondeuse.bean.Grid;
+import java.util.Map;
+
+import fr.tpepio.poc.tondeuse.domain.Case;
+import fr.tpepio.poc.tondeuse.domain.Grid;
 import fr.tpepio.poc.tondeuse.enumeration.EnumCardinalPoint;
 import fr.tpepio.poc.tondeuse.strategy.IMoveStrategy;
 import fr.tpepio.poc.tondeuse.trans.Constants;
@@ -25,6 +27,12 @@ import fr.tpepio.poc.tondeuse.trans.Constants;
  */
 public class DefaultMoveStrategy implements IMoveStrategy {
 
+	/** Map qui associe une orientation X à l'orientation Y que l'on obtient en se tournant à gauche. */
+	private Map<String, String> toTheLeft;
+	
+	/** Map qui associe une orientation X à l'orientation Y que l'on obtient en se tournant à droite. */
+	private Map<String, String> toTheRight;
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -35,7 +43,7 @@ public class DefaultMoveStrategy implements IMoveStrategy {
 		// Calcul de la case suivante "imaginaire". Elle peut se situer en dehors de la grille.
 		Case nextCase = this.getNextCase(thePosition, theOrientation);
 
-		// Si la case "imaginaire" se situe dans la grille : on peut s'y mouvoir.
+		// Si la case "imaginaire" se situe dans la grille : on peut s'y déplacer.
 		// Sinon le déplacement est invalide.
 		if (theGrid.isInGrid(nextCase)) {
 			result = nextCase;
@@ -43,6 +51,24 @@ public class DefaultMoveStrategy implements IMoveStrategy {
 
 		return result;
 	}
+	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public EnumCardinalPoint leftTurn(EnumCardinalPoint theOrientation) {
+		return EnumCardinalPoint.fromCode(this.toTheLeft.get(theOrientation.getCode()));
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public EnumCardinalPoint rightTurn(EnumCardinalPoint theOrientation) {
+		return EnumCardinalPoint.fromCode(this.toTheRight.get(theOrientation.getCode()));
+	}
+
+
 
 	/**
 	 * Permet de savoir quelle serait théoriquement la prochaine case atteinte sur une grille infinie.
@@ -58,6 +84,7 @@ public class DefaultMoveStrategy implements IMoveStrategy {
 		Integer newAbscisse = null;
 		Integer newOrdonne = null;
 		if (theOrientation != null) {
+			
 			// On teste la direction dans laquelle on souhaite aller.
 			if (EnumCardinalPoint.NORTH.equals(theOrientation)) {
 				// On souhaite aller au nord : on garde la même abscisse, on incrémente l'ordonnée de 1.
@@ -83,4 +110,23 @@ public class DefaultMoveStrategy implements IMoveStrategy {
 
 		return nextCase;
 	}
+
+
+
+	/**
+	 * @param toTheLeft the toTheLeft to set
+	 */
+	public void setToTheLeft(Map<String, String> toTheLeft) {
+		this.toTheLeft = toTheLeft;
+	}
+
+
+	/**
+	 * @param toTheRight the toTheRight to set
+	 */
+	public void setToTheRight(Map<String, String> toTheRight) {
+		this.toTheRight = toTheRight;
+	}
+	
+	
 }

@@ -10,8 +10,14 @@
     http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
 
+	<!-- Stratégie de mouvement par défaut d'une tondeuse. -->
+	<bean id="defaultMoveStrategy" class="fr.tpepio.poc.tondeuse.strategy.impl.DefaultMoveStrategy">
+		<property name="toTheLeft" ref="toTheLeft"/>
+		<property name="toTheRight" ref="toTheRight"/>
+	</bean>
+	
 	<!-- Map qui indique vers quelle direction on se tourne lorsqu'on tourne à gauche. -->
-	<util:map id="turnLeft">
+	<util:map id="toTheLeft">
 		<entry key="NOTRH" value="WEST" />
 		<entry key="EAST" value="SOUTH" />
 		<entry key="SOUTH" value="WEST" />
@@ -19,7 +25,7 @@
 	</util:map>
 	
 	<!-- Map qui indique vers quelle direction on se tourne lorsqu'on tourne à droite. -->
-	<util:map id="turnRight">
+	<util:map id="toTheRight">
 		<entry key="NOTRH" value="EAST" />
 		<entry key="EAST" value="SOUTH" />
 		<entry key="SOUTH" value="WEST" />

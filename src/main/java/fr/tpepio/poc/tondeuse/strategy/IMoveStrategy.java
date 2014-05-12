@@ -1,7 +1,7 @@
 package fr.tpepio.poc.tondeuse.strategy;
 
-import fr.tpepio.poc.tondeuse.bean.Case;
-import fr.tpepio.poc.tondeuse.bean.Grid;
+import fr.tpepio.poc.tondeuse.domain.Case;
+import fr.tpepio.poc.tondeuse.domain.Grid;
 import fr.tpepio.poc.tondeuse.enumeration.EnumCardinalPoint;
 
 /**
@@ -20,5 +20,21 @@ public interface IMoveStrategy {
 	 * échoué.
 	 */
 	Case move(Grid theGrid, Case thePosition, EnumCardinalPoint theOrientation);
+	
+	/**
+	 * Méthode qui indique où on est dirigé lorsqu'on tourne vers la gauche, à partir d'une orientation donnée.
+	 * 
+	 * @param theOrientation l'orientation de départ.
+	 * @return l'orientation d'arrivée.
+	 */
+	EnumCardinalPoint leftTurn(EnumCardinalPoint theOrientation);
+	
+	/**
+	 * Méthode qui indique où on est dirigé lorsqu'on tourne vers la droite, à partir d'une orientation donnée.
+	 * 
+	 * @param theOrientation l'orientation de départ.
+	 * @return l'orientation d'arrivée.
+	 */
+	EnumCardinalPoint rightTurn(EnumCardinalPoint theOrientation);
 
 }

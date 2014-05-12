@@ -13,57 +13,26 @@
 	http://www.springframework.org/schema/jdbc
 	http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
 
-	<!-- Différentes cases -->
-	<bean id="case1"
-		  class="fr.tpepio.poc.tondeuse.bean.Case">
-		<constructor-arg name="theAbscisse" value="0" />
-		<constructor-arg name="theOrdonnee" value="0" />	  
-	</bean>
-	
-	<bean id="case2"
-		  class="fr.tpepio.poc.tondeuse.bean.Case">
-		<constructor-arg name="theAbscisse" value="0" />
-		<constructor-arg name="theOrdonnee" value="1" />	  
-	</bean>
-	
-	<bean id="case3"
-		  class="fr.tpepio.poc.tondeuse.bean.Case">
-		<constructor-arg name="theAbscisse" value="1" />
-		<constructor-arg name="theOrdonnee" value="0" />	  
-	</bean>
-	
-	<bean id="case4"
-		  class="fr.tpepio.poc.tondeuse.bean.Case">
-		<constructor-arg name="theAbscisse" value="1" />
-		<constructor-arg name="theOrdonnee" value="1" />	  
-	</bean>
+	<import resource="application-context.xml"/>
 	
 	<!-- Grille de taille 4 -->
 	<bean id="grid"
 		  class="fr.tpepio.poc.tondeuse.bean.Grid">
 		<constructor-arg name="abscisse" value="1" />
-		<constructor-arg name="ordonnee" value="1" />
-		<property name="cases">
-			<list>
-				<ref bean="case1"/>
-				<ref bean="case2"/>
-				<ref bean="case3"/>
-				<ref bean="case4"/>
-			</list>
-		</property>	  
+		<constructor-arg name="ordonnee" value="1" />		
 	</bean>
 	
-	<!-- Strategie de mouvement -->
-	<bean id="mockMoveStrategy"
-		  class="fr.tpepio.poc.tondeuse.strategy.impl.DefaultMoveStrategy">		
-	</bean>
-
 	<!-- Tondeuse -->
 	<bean id="mower"
 		  class="fr.tpepio.poc.tondeuse.core.Mower"
 		  scope="prototype">
 		<property name="grid" ref="grid" />
-		<property name="currentCase" ref="case3" />
+		<property name="currentCase">
+			<bean class="fr.tpepio.poc.tondeuse.domain.Case">
+				<constructor-arg name="theAbscisse" value="1"/>
+				<constructor-arg name="theAbscisse" value="0"/>
+			</bean>
+		</property>
 		<property name="orientation" value="NORTH" />
 		<property name="strategy" ref="mockMoveStrategy" />	  
 	</bean>

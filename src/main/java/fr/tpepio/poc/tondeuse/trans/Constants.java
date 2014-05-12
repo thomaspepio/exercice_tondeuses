@@ -1,6 +1,6 @@
 package fr.tpepio.poc.tondeuse.trans;
 
-import fr.tpepio.poc.tondeuse.bean.Case;
+import fr.tpepio.poc.tondeuse.domain.Case;
 
 /**
  * Classe contenant les constantes de l'application.

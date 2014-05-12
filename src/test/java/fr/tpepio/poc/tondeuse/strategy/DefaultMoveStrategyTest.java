@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.tpepio.poc.tondeuse.bean.Case;
-import fr.tpepio.poc.tondeuse.bean.Grid;
+import fr.tpepio.poc.tondeuse.domain.Case;
+import fr.tpepio.poc.tondeuse.domain.Grid;
 import fr.tpepio.poc.tondeuse.enumeration.EnumCardinalPoint;
 import fr.tpepio.poc.tondeuse.strategy.impl.DefaultMoveStrategy;
 import fr.tpepio.poc.tondeuse.trans.Constants;

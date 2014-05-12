@@ -1,83 +1,77 @@
 package fr.tpepio.poc.tondeuse.core;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.Mockito;
 
-import fr.tpepio.poc.tondeuse.bean.Case;
-import fr.tpepio.poc.tondeuse.core.Mower;
+import fr.tpepio.poc.tondeuse.core.impl.Mower;
+import fr.tpepio.poc.tondeuse.domain.Case;
+import fr.tpepio.poc.tondeuse.domain.Grid;
 import fr.tpepio.poc.tondeuse.enumeration.EnumCardinalPoint;
+import fr.tpepio.poc.tondeuse.strategy.IMoveStrategy;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:application-context-test.xml" })
 public class MowerTest {
-	
-	@Autowired
-	private Mower mower = null;
-	
-	@Test
-	public void testMoveRight() {
-		boolean expected = true;
-		boolean actual = this.mower.moveRight();
-		
-		EnumCardinalPoint expectedEnum = EnumCardinalPoint.EAST;
-		EnumCardinalPoint actualEnum = this.mower.getOrientation();
-		
-		Assert.assertEquals(expected, actual);
-		Assert.assertEquals(expectedEnum, actualEnum);
-	}
 
-	
-	@Test
-	public void testMoveLeft() {
-		boolean expected = true;
-		boolean actual = this.mower.moveLeft();
-		
-		EnumCardinalPoint expectedEnum = EnumCardinalPoint.WEST;
-		EnumCardinalPoint actualEnum = this.mower.getOrientation();
-		
-		Assert.assertEquals(expected, actual);
-		Assert.assertEquals(expectedEnum, actualEnum);
+	private Mower mower = new Mower();
+
+	private IMoveStrategy strategy;
+
+	@Before
+	private void init() {
+		this.strategy = Mockito.mock(IMoveStrategy.class);
+
+		this.mower.setMoveStrategy(strategy);
+		this.mower.setGrid(new Grid(2, 2));
+		this.mower.setCurrentCase(new Case(1, 0));
 	}
 
 	@Test
-	public void testForward() {
-		boolean expected = true;
-		boolean actual = this.mower.moveForward();
-		
-		EnumCardinalPoint expectedEnum = EnumCardinalPoint.NORTH;
-		EnumCardinalPoint actualEnum = this.mower.getOrientation();
-		
-		Case expectedCase = new Case(1, 1);
-		Case actualCase = this.mower.getCurrentCase();
-		
-		Assert.assertEquals(expected, actual);
-		Assert.assertEquals(expectedEnum, actualEnum);
-		Assert.assertEquals(expectedCase, actualCase);
-	}
-	
-	@Test
-	public void testForwardFails() {
-		boolean expected = false;
-		
-		// On bouge une première fois pour se retrouver en A(1, 1).
-		// Puis une seconde fois, on arrive alors dans une case hors de la grille.
-		this.mower.moveForward();
-		boolean actual = this.mower.moveForward();
-		
-		EnumCardinalPoint expectedEnum = EnumCardinalPoint.NORTH;
-		EnumCardinalPoint actualEnum = this.mower.getOrientation();
-		
-		// On s'attend à ce que la tondeuse n'ait pas bougé.
-		Case expectedCase = new Case(1, 1);
-		Case actualCase = this.mower.getCurrentCase();
-		
-		Assert.assertEquals(expected, actual);
-		Assert.assertEquals(expectedEnum, actualEnum);
-		Assert.assertEquals(expectedCase, actualCase);
+	private void testMovementOK() {
+		this.mower.setOrientation(EnumCardinalPoint.NORTH);
+
+		Assert.assertTrue("La tondeuse aurait du avancer.",
+				this.mower.moveForward());
+
+		Case expected = new Case(1, 1);
+		Assert.assertEquals("La case d'arrivée est incorrecte.", expected,
+				this.mower.getCurrentCase());
 	}
 
+	@Test
+	private void testMovementKO() {
+		this.mower.setOrientation(EnumCardinalPoint.SOUTH);
+
+		Assert.assertFalse("La tondeuse n'aurait pas du avancer.",
+				this.mower.moveForward());
+
+		Case expected = new Case(1, 0);
+		Assert.assertEquals("La case d'arrivée est incorrecte.", expected,
+				this.mower.getCurrentCase());
+	}
+
+	@Test
+	private void testTurnLeft() {
+		Mockito.doReturn(EnumCardinalPoint.WEST).when(this.strategy)
+				.leftTurn(EnumCardinalPoint.NORTH);
+
+		this.mower.setOrientation(EnumCardinalPoint.NORTH);
+
+		Assert.assertTrue("La rotation n'a pas eu lieu.", this.mower.moveLeft());
+		Assert.assertEquals("La rotation est incorrecte.",
+				EnumCardinalPoint.WEST, this.mower.getOrientation());
+	}
+
+	@Test
+	private void testTurnRight() {
+		Mockito.doReturn(EnumCardinalPoint.EAST).when(this.strategy)
+				.leftTurn(EnumCardinalPoint.NORTH);
+
+		this.mower.setOrientation(EnumCardinalPoint.NORTH);
+
+		Assert.assertTrue("La rotation n'a pas eu lieu.",
+				this.mower.moveRight());
+		Assert.assertEquals("La rotation est incorrecte.",
+				EnumCardinalPoint.EAST, this.mower.getOrientation());
+	}
 }
