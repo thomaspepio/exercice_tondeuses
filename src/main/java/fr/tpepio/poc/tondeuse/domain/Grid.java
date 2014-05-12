@@ -1,8 +1,5 @@
 package fr.tpepio.poc.tondeuse.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -50,7 +47,7 @@ public class Grid {
 			// plus l'origine elle même.
 			this.size = abscisse + ordonnee + 1;
 		} else {
-			this.size = abscisse * ordonnee;
+			this.size = (abscisse + 1) * (ordonnee + 1);
 		}
 	}
 
