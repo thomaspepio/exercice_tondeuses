@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+
+	<!-- Map qui indique vers quelle direction on se tourne lorsqu'on tourne à gauche. -->
+	<util:map id="turnLeft">
+		<entry key="NOTRH" value="WEST" />
+		<entry key="EAST" value="SOUTH" />
+		<entry key="SOUTH" value="WEST" />
+		<entry key="WEST" value="NORTH" />
+	</util:map>
+	
+	<!-- Map qui indique vers quelle direction on se tourne lorsqu'on tourne à droite. -->
+	<util:map id="turnRight">
+		<entry key="NOTRH" value="EAST" />
+		<entry key="EAST" value="SOUTH" />
+		<entry key="SOUTH" value="WEST" />
+		<entry key="WEST" value="NORTH" />
+	</util:map>
+
+
+</beans>
