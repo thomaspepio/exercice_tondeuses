@@ -16,16 +16,13 @@
 	<import resource="application-context.xml"/>
 	
 	<!-- Grille de taille 4 -->
-	<bean id="grid"
-		  class="fr.tpepio.poc.tondeuse.bean.Grid">
+	<bean id="grid" class="fr.tpepio.poc.tondeuse.bean.Grid">
 		<constructor-arg name="abscisse" value="1" />
 		<constructor-arg name="ordonnee" value="1" />		
 	</bean>
 	
 	<!-- Tondeuse -->
-	<bean id="mower"
-		  class="fr.tpepio.poc.tondeuse.core.Mower"
-		  scope="prototype">
+	<bean id="mower" class="fr.tpepio.poc.tondeuse.core.Mower" scope="prototype">
 		<property name="grid" ref="grid" />
 		<property name="currentCase">
 			<bean class="fr.tpepio.poc.tondeuse.domain.Case">

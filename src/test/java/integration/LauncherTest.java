@@ -1,4 +1,4 @@
-package fr.tpepio.poc.tondeuse.launcher;
+package integration;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ import fr.tpepio.poc.tondeuse.core.impl.Mower;
 import fr.tpepio.poc.tondeuse.domain.Case;
 import fr.tpepio.poc.tondeuse.domain.Grid;
 import fr.tpepio.poc.tondeuse.enumeration.EnumCardinalPoint;
+import fr.tpepio.poc.tondeuse.launcher.Launcher;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:application-context-test.xml" })

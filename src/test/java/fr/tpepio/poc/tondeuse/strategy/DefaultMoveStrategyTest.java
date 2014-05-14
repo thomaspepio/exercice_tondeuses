@@ -1,12 +1,10 @@
 package fr.tpepio.poc.tondeuse.strategy;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
 
 import fr.tpepio.poc.tondeuse.domain.Case;
 import fr.tpepio.poc.tondeuse.domain.Grid;
@@ -14,40 +12,90 @@ import fr.tpepio.poc.tondeuse.enumeration.EnumCardinalPoint;
 import fr.tpepio.poc.tondeuse.strategy.impl.DefaultMoveStrategy;
 import fr.tpepio.poc.tondeuse.trans.Constants;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:application-context-test.xml" })
 public class DefaultMoveStrategyTest {
 
-	@Autowired
-	IMoveStrategy mockMoveStrategy = null;
-	
-	@Autowired
+	DefaultMoveStrategy defaultMoveStrategy = new DefaultMoveStrategy();
+
 	Grid grid = null;
-	
-	@Test
-	public void testCaseExists() {
-		// On démarre de la case3, on s'attend à arriver sur la case 4 en allant au nord.
-		Case startCase = new Case(1, 0);
-		Case expectedCase = new Case(1, 1);
-		
-		Case resultCase = this.mockMoveStrategy.move(this.grid, startCase, EnumCardinalPoint.NORTH);
-		
-		Assert.assertEquals(expectedCase, resultCase);
+
+	@Before
+	public void init() {
+		this.grid = Mockito.mock(Grid.class);
+		Mockito.doReturn(true).when(this.grid)
+				.isInGrid(Matchers.any(Case.class));
+
 	}
-	
+
 	@Test
-	public void testCaseDoesNotExists() {
-		// On démarre de la case3, on s'attend à arriver sur la case 4 en allant au nord.
-		Case startCase = new Case(1, 0);
-		Case expectedCase = new Case(1, 1);
-		
-		Case resultCase = this.mockMoveStrategy.move(this.grid, startCase, EnumCardinalPoint.EAST);
-		
-		boolean expected = false;
-		boolean actual = expectedCase.equals(resultCase);
-		
-		Assert.assertEquals(expected, actual);
-		Assert.assertEquals(Constants.ERROR_CASE, resultCase);
+	public void testMoveToNorth() {
+		Case start = new Case(1, 1);
+		Case arrival = this.defaultMoveStrategy.move(this.grid, start,
+				EnumCardinalPoint.NORTH);
+
+		Assert.assertNotNull("La case d'arrivée ne doit jamais être null.",
+				arrival);
+
+		Case expected = new Case(1, 2);
+		Assert.assertEquals("La case d'arrivée est incorrecte.", expected,
+				arrival);
 	}
-	
+
+	@Test
+	public void testMoveToEast() {
+		Case start = new Case(1, 1);
+		Case arrival = this.defaultMoveStrategy.move(this.grid, start,
+				EnumCardinalPoint.EAST);
+
+		Assert.assertNotNull("La case d'arrivée ne doit jamais être null.",
+				arrival);
+
+		Case expected = new Case(2, 1);
+		Assert.assertEquals("La case d'arrivée est incorrecte.", expected,
+				arrival);
+	}
+
+	@Test
+	public void testMoveToSouth() {
+		Case start = new Case(1, 1);
+		Case arrival = this.defaultMoveStrategy.move(this.grid, start,
+				EnumCardinalPoint.SOUTH);
+
+		Assert.assertNotNull("La case d'arrivée ne doit jamais être null.",
+				arrival);
+
+		Case expected = new Case(1, 0);
+		Assert.assertEquals("La case d'arrivée est incorrecte.", expected,
+				arrival);
+	}
+
+	@Test
+	public void testMoveToWest() {
+		Case start = new Case(1, 1);
+		Case arrival = this.defaultMoveStrategy.move(this.grid, start,
+				EnumCardinalPoint.WEST);
+
+		Assert.assertNotNull("La case d'arrivée ne doit jamais être null.",
+				arrival);
+
+		Case expected = new Case(0, 1);
+		Assert.assertEquals("La case d'arrivée est incorrecte.", expected,
+				arrival);
+	}
+
+	@Test
+	public void testArrivalNotInGrid() {
+		Mockito.doReturn(false).when(this.grid)
+				.isInGrid(Matchers.any(Case.class));
+
+		Case start = new Case(1, 1);
+		Case arrival = this.defaultMoveStrategy.move(this.grid, start,
+				EnumCardinalPoint.WEST);
+
+		Assert.assertNotNull("La case d'arrivée ne doit jamais être null.",
+				arrival);
+
+		Case expected = Constants.ERROR_CASE;
+		Assert.assertEquals("La case d'arrivée est incorrecte.", expected,
+				arrival);
+	}
 }
