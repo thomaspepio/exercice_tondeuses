@@ -1,6 +1,5 @@
 package fr.tpepio.poc.tondeuse.io.impl;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,6 +18,7 @@ import fr.tpepio.poc.tondeuse.domain.Case;
 import fr.tpepio.poc.tondeuse.domain.Grid;
 import fr.tpepio.poc.tondeuse.enumeration.EnumCardinalPoint;
 import fr.tpepio.poc.tondeuse.io.ICommandFile;
+import fr.tpepio.poc.tondeuse.strategy.IMoveStrategy;
 
 /**
  * Implémentation de base de ICommandFile
@@ -26,11 +26,11 @@ import fr.tpepio.poc.tondeuse.io.ICommandFile;
  * @author tpepio
  * 
  */
-public class CommandeFileImpl implements ICommandFile {
+public class CommandFileImpl implements ICommandFile {
 
 	/** Logger./ */
 	private static final Logger LOGGER = LoggerFactory
-			.getLogger(CommandeFileImpl.class);
+			.getLogger(CommandFileImpl.class);
 
 	private static final String IO_EXCEPTION = "Impossible de lire {0}.";
 	
@@ -55,18 +55,14 @@ public class CommandeFileImpl implements ICommandFile {
 	/**
 	 * Constructeur.
 	 * 
-	 * @param filePath
-	 *            chemin vers le fichier de commandes.
-	 * @throws FileNotFoundException
-	 *             levée lorsque le fichier n'existe pas.
+	 * @param filePath chemin vers le fichier de commandes.
 	 */
-	public CommandeFileImpl(String filePath) {
+	public CommandFileImpl(String filePath) {
 		this.path = Paths.get(filePath);
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * 
 	 */
 	@Override
 	public Grid buildGrid() {
@@ -93,16 +89,21 @@ public class CommandeFileImpl implements ICommandFile {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<Mower> buildMowers() {
-		List<Mower> result = new ArrayList<Mower>();
+	public List<Mower> buildMowers(Grid theGrid, IMoveStrategy theStrategy) {
+		List<Mower> mowers = new ArrayList<Mower>();
 
 		try (Stream<String> stream = Files.lines(this.path)) {
-			stream.filter(line -> line.startsWith(PREFIX_INIT_MOWER)).forEach(line -> result.add(this.getMowerFromLine(line.split(SEPARATOR))));
+			stream.filter(line -> line.startsWith(PREFIX_INIT_MOWER)).forEach(line -> mowers.add(this.getMowerFromLine(line.split(SEPARATOR))));
 		} catch (IOException e) {
 			LOGGER.error(MessageFormat.format(IO_EXCEPTION, this.path.getFileName().toString()));
 		}
 		
-		return result;
+		for(Mower mower : mowers) {
+			mower.setGrid(theGrid);
+			mower.setMoveStrategy(theStrategy);
+		}
+		
+		return mowers;
 	}
 
 	/**
@@ -117,6 +118,7 @@ public class CommandeFileImpl implements ICommandFile {
 		Mower mower = new Mower();
 		mower.setCurrentCase(aCase);
 		mower.setOrientation(EnumCardinalPoint.fromCode(line[3]));
+		mower.setInstructions(line[4]);
 		
 		return mower;
 	}

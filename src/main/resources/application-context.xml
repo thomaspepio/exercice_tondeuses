@@ -9,6 +9,12 @@
     http://www.springframework.org/schema/util
     http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
+	<context:property-placeholder/>
+
+	<!-- Accès au fichier de commandes. -->
+	<bean id="commandFile" class="fr.tpepio.poc.tondeuse.io.impl.CommandFileImpl">
+		<constructor-arg name="filePath" value="${command.file}" />
+	</bean>
 
 	<!-- Stratégie de mouvement par défaut d'une tondeuse. -->
 	<bean id="defaultMoveStrategy" class="fr.tpepio.poc.tondeuse.strategy.impl.DefaultMoveStrategy">

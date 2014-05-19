@@ -8,11 +8,12 @@ import org.junit.Test;
 import fr.tpepio.poc.tondeuse.core.impl.Mower;
 import fr.tpepio.poc.tondeuse.domain.Grid;
 import fr.tpepio.poc.tondeuse.enumeration.EnumCardinalPoint;
-import fr.tpepio.poc.tondeuse.io.impl.CommandeFileImpl;
+import fr.tpepio.poc.tondeuse.io.impl.CommandFileImpl;
+import fr.tpepio.poc.tondeuse.strategy.impl.DefaultMoveStrategy;
 
 public class CommandeFileImplTest {
 
-	private CommandeFileImpl commande = new CommandeFileImpl("./src/test/resources/sample-test-file.txt");
+	private CommandFileImpl commande = new CommandFileImpl("./src/test/resources/sample-test-file.txt");
 	
 	@Test
 	public void testBuildGrid() {
@@ -25,7 +26,7 @@ public class CommandeFileImplTest {
 	
 	@Test
 	public void testBuildMowers() {
-		List<Mower> mowers = this.commande.buildMowers();
+		List<Mower> mowers = this.commande.buildMowers(new Grid(0, 0), new DefaultMoveStrategy());
 		
 		Assert.assertEquals("La taille de la liste est incorrecte.", 3, mowers.size());
 		
