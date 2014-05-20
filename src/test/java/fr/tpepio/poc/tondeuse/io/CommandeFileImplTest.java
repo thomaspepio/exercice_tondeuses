@@ -20,8 +20,8 @@ public class CommandeFileImplTest {
 		Grid grid = this.commande.buildGrid();
 		
 		Assert.assertNotNull("La grille ne doit pas être null.", grid);
-		Assert.assertEquals("L'abscisse de la case haut-droit est incorrecte.", Integer.valueOf(2), grid.getAbscisseUpperRight());
-		Assert.assertEquals("L'ordonnée de la case haut-droit est incorrecte.", Integer.valueOf(1), grid.getOrdonneeUpperRight());
+		Assert.assertEquals("L'abscisse de la case haut-droit est incorrecte.", Integer.valueOf(10), grid.getAbscisseUpperRight());
+		Assert.assertEquals("L'ordonnée de la case haut-droit est incorrecte.", Integer.valueOf(10), grid.getOrdonneeUpperRight());
 	}
 	
 	@Test

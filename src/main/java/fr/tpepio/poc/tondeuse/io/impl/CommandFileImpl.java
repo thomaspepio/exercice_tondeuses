@@ -43,12 +43,6 @@ public class CommandFileImpl implements ICommandFile {
 	/** Préfixe des lignes qui permettent d'initialiser une tondeuse. */
 	private static final String PREFIX_INIT_MOWER = "MOWER";
 	
-	/** Message d'erreur utilisé lorsqu'on ne parvient pas à trouver le fichier. */
-	private static final String FILE_NOT_FOUND_EXCEPTION = "Le fichier {0} n'existe pas.";
-	
-	/** Message d'erreur utilisé lorsqu'on est incapable de lire au moins une ligne concernant une tondeuse. */
-	private static final String IO_EXCEPTION_INIT_MOWERS = "Erreur lors de l'initialisation des tondeuses.";
-	
 	/** Fichier de commandes. */
 	private Path path;
 

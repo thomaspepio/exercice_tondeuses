@@ -42,56 +42,6 @@ public enum EnumCardinalPoint {
 	}
 
 	/**
-	 * Permet de récupérer le point cardinal se situant "à droite".
-	 * 
-	 * @return le point cardinal en question, null en cas d'erreur.
-	 */
-	public EnumCardinalPoint getRightCardinalPoint() {
-		EnumCardinalPoint result = null;
-
-		if (EnumCardinalPoint.NORTH.equals(this)) {
-			// Au nord, le point cardinal à droite est l'est.
-			result = EnumCardinalPoint.EAST;
-		} else if (EnumCardinalPoint.EAST.equals(this)) {
-			// A l'est, le point cardinal à droite est le sud.
-			result = EnumCardinalPoint.SOUTH;
-		} else if (EnumCardinalPoint.SOUTH.equals(this)) {
-			// Au sud, le point cardinal à droite est l'ouest.
-			result = EnumCardinalPoint.WEST;
-		} else if (EnumCardinalPoint.WEST.equals(this)) {
-			// A l'ouest, le point cardinal à droite est le nord.
-			result = EnumCardinalPoint.NORTH;
-		}
-
-		return result;
-	}
-
-	/**
-	 * Permet de récupérer le point cardinal se situant "à gauche".
-	 * 
-	 * @return le point cardinal en question, null en cas d'erreur.
-	 */
-	public EnumCardinalPoint getLeftCardinalPoint() {
-		EnumCardinalPoint result = null;
-
-		if (EnumCardinalPoint.NORTH.equals(this)) {
-			// Au nord, le point cardinal à gauche est l'ouest.
-			result = EnumCardinalPoint.WEST;
-		} else if (EnumCardinalPoint.WEST.equals(this)) {
-			// A l'ouest, le point cardinal à gauche est le sud.
-			result = EnumCardinalPoint.SOUTH;
-		} else if (EnumCardinalPoint.SOUTH.equals(this)) {
-			// Au sud, le point cardinal à gauche est l'est.
-			result = EnumCardinalPoint.EAST;
-		} else if (EnumCardinalPoint.EAST.equals(this)) {
-			// A l'est, le point cardinal à gauche est le nord.
-			result = EnumCardinalPoint.NORTH;
-		}
-
-		return result;
-	}
-
-	/**
 	 * Getter for code.
 	 * 
 	 * @return Returns the code.
